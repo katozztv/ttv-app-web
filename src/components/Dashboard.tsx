@@ -3021,9 +3021,9 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
 
           {view === 'gifts' && (
             <div className="animate-in fade-in zoom-in-95 duration-300">
-              <header className="mb-12 flex flex-col md:flex-row md:justify-between md:items-end gap-4">
+              <header className="mb-8 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
                 <div>
-                  <h1 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-rose-500 drop-shadow-[0_0_15px_rgba(245,158,11,0.3)]">
+                  <h1 className="text-4xl font-black text-yellow-400">
                     🎁 ระบบของขวัญ
                   </h1>
                   <p className="text-zinc-400 mt-2">ตั้งค่าเหตุการณ์เมื่อได้รับของขวัญ เพื่อสั่งงานปุ่มบนคีย์บอร์ด</p>
@@ -3389,9 +3389,9 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
                 </div>
 
                 {/* Rules Editor */}
-                <div className="lg:col-span-2 relative flex items-center justify-center">
+                <div className="lg:col-span-2 relative">
                   {isGiftsLocked && (
-                    <div className="absolute z-50 flex flex-col items-center justify-center pointer-events-auto">
+                    <div className="absolute inset-0 z-50 flex flex-col items-center justify-center pointer-events-auto">
                       <div className="bg-black/80 px-8 py-6 flex flex-col items-center justify-center border border-red-500/40 rounded-3xl shadow-[0_0_30px_rgba(239,68,68,0.3)] backdrop-blur-xl transform transition-transform hover:scale-105">
                         <span className="text-5xl mb-3 drop-shadow-lg">🔒</span>
                         <h2 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-rose-500 mb-1">ฟีเจอร์ถูกล็อก</h2>
@@ -3455,7 +3455,7 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
                               />
                             </div>
 
-                            <div className="flex flex-wrap items-end gap-3 w-full">
+                            <div className="flex flex-wrap items-start gap-3 w-full">
 
                               <div className="flex-1 min-w-[200px]">
                                 <label className="block text-xs font-medium text-zinc-400 mb-1">เลือก Event</label>
@@ -3554,7 +3554,7 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
                               </div>
 
                               <div className="flex-1 min-w-[250px]">
-                                <label className="block text-xs font-medium text-emerald-400 mb-1">
+                                <label className="block text-xs font-medium text-zinc-400 mb-1">
                                   {!rule.actionType || rule.actionType === 'keypress' ? 'Key' : rule.actionType === 'minecraft' ? 'คำสั่ง' : rule.actionType === 'webhook' ? 'Webhook URL' : rule.actionType === 'random' ? 'เลือกรายการที่ต้องการสุ่ม' : 'ตั้งค่าบวกลบวิน'}
                                 </label>
                                 <div className="flex gap-2">
