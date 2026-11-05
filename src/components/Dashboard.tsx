@@ -338,6 +338,21 @@ function CountdownBoxes({ parts, color = 'zinc', showDays = true }: { parts: Cou
 // ปิดระบบแต้ม PTS และภารกิจไว้ก่อน (เปลี่ยนเป็น true เพื่อเปิดกลับ)
 const POINTS_MISSIONS_ENABLED = false;
 
+// แสดงให้เห็นแต่ล็อกไว้ ตอนระบบแต้ม/ภารกิจยังปิดอยู่
+function PointsLock({ children, className = '', compact = false }: { children: React.ReactNode; className?: string; compact?: boolean }) {
+  if (POINTS_MISSIONS_ENABLED) return <>{children}</>;
+  return (
+    <div className={`relative ${className}`}>
+      <div className="pointer-events-none select-none blur-[2px] opacity-50" aria-hidden>{children}</div>
+      <div className="absolute inset-0 z-[60] flex flex-col items-center justify-center bg-black/40 rounded-3xl cursor-not-allowed text-center">
+        <span className={compact ? 'text-lg' : 'text-4xl mb-2'}>🔒</span>
+        {!compact && <span className="text-lg font-bold text-white">ปิดใช้งานชั่วคราว</span>}
+        {!compact && <span className="text-sm text-zinc-300">ระบบแต้มและภารกิจยังไม่เปิดให้ใช้</span>}
+      </div>
+    </div>
+  );
+}
+
 export default function Dashboard({ user, sessionUser }: { user: any, sessionUser: any }) {
   const [view, setView] = useState<'dashboard' | 'counter' | 'game' | 'gifts' | 'admin' | 'sound' | 'keyboard_sound' | 'decoration'>('dashboard');
   const [adminUsers, setAdminUsers] = useState<any[]>([]);
@@ -1808,7 +1823,7 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
               )}
 
               {/* Special Event Card (Sat Only) */}
-              {POINTS_MISSIONS_ENABLED && (
+              <PointsLock>
               <div className="mb-6 relative overflow-hidden rounded-3xl">
                 {isLocked && (
                   <div className="absolute inset-0 z-50 bg-black/60 backdrop-blur-sm flex flex-col items-center justify-center border border-red-500/20 rounded-3xl">
@@ -1941,7 +1956,7 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
                   </div>
                 </div>
               </div>
-              )}
+              </PointsLock>
               <h2 className="text-lg font-black text-yellow-400 mb-3">บัญชีของฉัน และการเชื่อมต่อ TikTok</h2>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-3xl hover:bg-white/10 transition-colors flex flex-col">
@@ -1973,7 +1988,7 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
                       </div>
 
                       {/* Shield UI */}
-                      {POINTS_MISSIONS_ENABLED && (
+                      <PointsLock compact className="shrink-0">
                       <div className="relative">
                         {isLocked && (
                           <div className="absolute inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center border border-red-500/20 rounded-xl cursor-not-allowed">
@@ -1988,12 +2003,12 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
                           <span className="text-[9px] text-zinc-400 mt-1">โล่ป้องกันหัก LP</span>
                         </div>
                       </div>
-                      )}
+                      </PointsLock>
                     </div>
                   </div>
 
                   {/* Level System UI */}
-                  {POINTS_MISSIONS_ENABLED && (
+                  <PointsLock compact className="mt-auto">
                   <div className="mt-auto pt-6 relative">
                     {isLocked && (
                       <div className="absolute inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center border border-red-500/20 rounded-xl cursor-not-allowed mt-4">
@@ -2058,7 +2073,7 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
                       <span>⚠️ หากทำภารกิจรายวันขั้นต่ำไม่สำเร็จ จะถูกหัก <span className="text-red-400 font-medium">-100 LP</span></span>
                     </div>
                   </div>
-                  )}
+                  </PointsLock>
                 </div>
 
                 <div className="bg-gradient-to-br from-amber-500/10 to-yellow-500/10 backdrop-blur-md border border-amber-500/20 p-8 rounded-3xl hover:from-amber-500/20 hover:to-yellow-500/20 transition-all flex flex-col justify-between relative overflow-hidden">
@@ -2164,9 +2179,9 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
                 </div>
               </div>
 
-              {POINTS_MISSIONS_ENABLED && (<>
               {/* Second Row: Points and Mission */}
               <h2 className="text-lg font-black text-yellow-400 mt-10 mb-3">แต้มและภารกิจ</h2>
+              <PointsLock>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Points Card */}
                 <div className="bg-gradient-to-r from-amber-500/10 to-amber-500/10 backdrop-blur-md border border-amber-500/20 p-8 rounded-3xl relative overflow-hidden group hover:border-amber-500/40 transition-all flex flex-col justify-center">
@@ -2388,7 +2403,7 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
                   </div>
                 </div>
               </div>
-              </>)}
+              </PointsLock>
 
 
               {/* Redeem Modal */}
