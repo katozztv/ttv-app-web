@@ -716,7 +716,7 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
       const filePath = `${fileName}`;
 
       const { data, error } = await supabase.storage
-        .from('sounds')
+        .from('ttv-sounds')
         .upload(filePath, file, { cacheControl: '3600', upsert: false });
 
       if (error) {
@@ -724,7 +724,7 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
       }
 
       const { data: publicUrlData } = supabase.storage
-        .from('sounds')
+        .from('ttv-sounds')
         .getPublicUrl(filePath);
 
       const publicUrl = publicUrlData.publicUrl;
@@ -754,7 +754,7 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
   const fetchSoundLibrary = async () => {
     setIsLoadingLibrary(true);
     try {
-      const { data, error } = await supabase.storage.from('sounds').list('', {
+      const { data, error } = await supabase.storage.from('ttv-sounds').list('', {
         limit: 100,
         offset: 0,
         sortBy: { column: 'created_at', order: 'desc' }
@@ -766,7 +766,7 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
 
       if (data) {
         const files = data.filter(f => f.name !== '.emptyFolderPlaceholder').map(file => {
-          const { data: publicUrlData } = supabase.storage.from('sounds').getPublicUrl(file.name);
+          const { data: publicUrlData } = supabase.storage.from('ttv-sounds').getPublicUrl(file.name);
           return {
             name: file.name,
             url: publicUrlData.publicUrl,
@@ -8878,17 +8878,17 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
                       try {
                         const fileName = `${Date.now()}-${file.name}`;
                         const filePath = `${fileName}`;
-                        const { error } = await supabase.storage.from('sounds').upload(filePath, file, { cacheControl: '3600', upsert: false });
+                        const { error } = await supabase.storage.from('ttv-sounds').upload(filePath, file, { cacheControl: '3600', upsert: false });
                         if (error) throw error;
                         
                         Swal.fire({ icon: 'success', title: 'สำเร็จ', text: 'เพิ่มเสียงเข้าคลังแล้ว', timer: 1500, showConfirmButton: false });
                         
                         // Refetch library
                         try {
-                          const { data, error: fetchError } = await supabase.storage.from('sounds').list('', { limit: 100, sortBy: { column: 'created_at', order: 'desc' } });
+                          const { data, error: fetchError } = await supabase.storage.from('ttv-sounds').list('', { limit: 100, sortBy: { column: 'created_at', order: 'desc' } });
                           if (!fetchError && data) {
                             const files = data.filter(f => f.name !== '.emptyFolderPlaceholder').map(f => {
-                              const { data: publicUrlData } = supabase.storage.from('sounds').getPublicUrl(f.name);
+                              const { data: publicUrlData } = supabase.storage.from('ttv-sounds').getPublicUrl(f.name);
                               return { name: f.name, url: publicUrlData.publicUrl, created_at: f.created_at };
                             });
                             setSoundLibraryFiles(files);
