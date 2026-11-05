@@ -3280,6 +3280,7 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
                                       <option value="like">❤️ กดใจ (ต่อคน)</option>
                                       <option value="total_like">🔥 กดใจรวม (ทั้งไลฟ์)</option>
                                       <option value="follow">👤 กดติดตาม (Follow)</option>
+                                      <option value="member">🚶 คนเข้าไลฟ์ (คนผ่าน)</option>
                                     </select>
 
                                     {(!rule.eventType || rule.eventType === 'gift') && (
@@ -3304,6 +3305,9 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
                                       </div>
                                     )}
 
+                                    {rule.eventType === 'member' && (
+                                      <p className="text-xs text-zinc-400 bg-black/40 p-2 rounded-lg border border-white/5">ทำงานทุกครั้งที่มีคนเข้าไลฟ์ (คนเดิมเข้าซ้ำภายใน 1 นาทีจะไม่นับ)</p>
+                                    )}
                                     {(rule.eventType === 'like' || rule.eventType === 'total_like') && (
                                       <div className="flex gap-2 items-center bg-black/40 p-1.5 rounded-lg border border-white/5">
                                         <span className="text-[10px] text-zinc-400 whitespace-nowrap">เป้าหมาย</span>
@@ -3469,6 +3473,7 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
                                   <option value="like">❤️ กดใจ (ต่อคน)</option>
                                   <option value="total_like">🔥 กดใจรวม (ทั้งไลฟ์)</option>
                                   <option value="follow">👤 กดติดตาม (Follow)</option>
+                                  <option value="member">🚶 คนเข้าไลฟ์ (คนผ่าน)</option>
                                 </select>
 
                                 {(!rule.eventType || rule.eventType === 'gift') && (
@@ -3493,6 +3498,9 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
                                   </div>
                                 )}
 
+                                {rule.eventType === 'member' && (
+                                  <p className="text-xs text-zinc-400 bg-black/40 p-2 rounded-lg border border-white/5">ทำงานทุกครั้งที่มีคนเข้าไลฟ์ (คนเดิมเข้าซ้ำภายใน 1 นาทีจะไม่นับ)</p>
+                                )}
                                 {(rule.eventType === 'like' || rule.eventType === 'total_like') && (
                                   <div className="flex gap-2 items-center bg-black/40 p-2 rounded-lg border border-white/5">
                                     <span className="text-sm text-zinc-400 whitespace-nowrap">เป้าหมาย: </span>
