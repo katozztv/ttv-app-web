@@ -149,10 +149,10 @@ export async function GET(request: Request) {
         }
 
         const discordMessage = {
-          content: i === 0 ? `🔔 **${title}** 🔔` : undefined,
+          content: i === 0 ? `🔔 **[TTV] ${title}** 🔔` : undefined,
           embeds: [
             {
-              color: 0x3b82f6,
+              color: 0xfacc15,
               description: description,
               footer: isLast ? { text: `สรุปรวมใช้แต้มไป: ${totalPointsRedeemed.toLocaleString()} Points (~${totalCashRedeemed.toLocaleString()} บาท)` } : undefined
             }

@@ -117,8 +117,8 @@ export async function POST(request: Request) {
       content: `<@${DISCORD_ADMIN_ID}> 🔔 **มีการแลกของรางวัลใหม่!** 🔔`,
       embeds: [
         {
-          title: "🎁 แจ้งเตือนการแลกคูปองเงินสด",
-          color: 0x10b981, // Emerald green
+          title: "🎁 [TTV] แจ้งเตือนการแลกคูปองเงินสด",
+          color: 0xfacc15, // TTV yellow
           fields: [
             {
               name: "👤 ผู้แลก (TikTok)",
