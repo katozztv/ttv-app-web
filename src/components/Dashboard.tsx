@@ -335,6 +335,9 @@ function CountdownBoxes({ parts, color = 'zinc', showDays = true }: { parts: Cou
   );
 }
 
+// ปิดระบบแต้ม PTS และภารกิจไว้ก่อน (เปลี่ยนเป็น true เพื่อเปิดกลับ)
+const POINTS_MISSIONS_ENABLED = false;
+
 export default function Dashboard({ user, sessionUser }: { user: any, sessionUser: any }) {
   const [view, setView] = useState<'dashboard' | 'counter' | 'game' | 'gifts' | 'admin' | 'sound' | 'keyboard_sound' | 'decoration'>('dashboard');
   const [adminUsers, setAdminUsers] = useState<any[]>([]);
@@ -1805,6 +1808,7 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
               )}
 
               {/* Special Event Card (Sat Only) */}
+              {POINTS_MISSIONS_ENABLED && (
               <div className="mb-6 relative overflow-hidden rounded-3xl">
                 {isLocked && (
                   <div className="absolute inset-0 z-50 bg-black/60 backdrop-blur-sm flex flex-col items-center justify-center border border-red-500/20 rounded-3xl">
@@ -1937,6 +1941,7 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
                   </div>
                 </div>
               </div>
+              )}
               <h2 className="text-lg font-black text-yellow-400 mb-3">บัญชีของฉัน และการเชื่อมต่อ TikTok</h2>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-3xl hover:bg-white/10 transition-colors flex flex-col">
@@ -1946,7 +1951,7 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
                       {actualIsOwner && (
                         <div className="flex gap-1.5 flex-wrap">
                           <button onClick={() => setSimulatedRole(null)} className={`px-2 py-1 text-[10px] sm:text-xs rounded border transition-colors ${!simulatedRole ? 'bg-yellow-500/20 text-yellow-300 border-yellow-500/50' : 'bg-black/30 text-zinc-500 border-white/10 hover:text-zinc-300'}`}>OWNER&Admin</button>
-                          <button onClick={() => setSimulatedRole('ttv')} className={`px-2 py-1 text-[10px] sm:text-xs rounded border transition-colors ${simulatedRole === 'ttv' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/50' : 'bg-black/30 text-zinc-500 border-white/10 hover:text-zinc-300'}`}>ผู้ใช้งาน LINE UP</button>
+                          <button onClick={() => setSimulatedRole('ttv')} className={`px-2 py-1 text-[10px] sm:text-xs rounded border transition-colors ${simulatedRole === 'ttv' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/50' : 'bg-black/30 text-zinc-500 border-white/10 hover:text-zinc-300'}`}>ผู้ใช้งาน TTV</button>
                           <button onClick={() => setSimulatedRole('customize')} className={`px-2 py-1 text-[10px] sm:text-xs rounded border transition-colors ${simulatedRole === 'customize' ? 'bg-amber-500/20 text-amber-300 border-amber-500/50' : 'bg-black/30 text-zinc-500 border-white/10 hover:text-zinc-300'}`}>Customize</button>
                           <button onClick={() => setSimulatedRole('user')} className={`px-2 py-1 text-[10px] sm:text-xs rounded border transition-colors ${simulatedRole === 'user' ? 'bg-zinc-700/50 text-zinc-300 border-zinc-500/50' : 'bg-black/30 text-zinc-500 border-white/10 hover:text-zinc-300'}`}>ผู้ใช้งาน (ทั่วไป)</button>
                         </div>
@@ -1968,6 +1973,7 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
                       </div>
 
                       {/* Shield UI */}
+                      {POINTS_MISSIONS_ENABLED && (
                       <div className="relative">
                         {isLocked && (
                           <div className="absolute inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center border border-red-500/20 rounded-xl cursor-not-allowed">
@@ -1982,10 +1988,12 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
                           <span className="text-[9px] text-zinc-400 mt-1">โล่ป้องกันหัก LP</span>
                         </div>
                       </div>
+                      )}
                     </div>
                   </div>
 
                   {/* Level System UI */}
+                  {POINTS_MISSIONS_ENABLED && (
                   <div className="mt-auto pt-6 relative">
                     {isLocked && (
                       <div className="absolute inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center border border-red-500/20 rounded-xl cursor-not-allowed mt-4">
@@ -2050,6 +2058,7 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
                       <span>⚠️ หากทำภารกิจรายวันขั้นต่ำไม่สำเร็จ จะถูกหัก <span className="text-red-400 font-medium">-100 LP</span></span>
                     </div>
                   </div>
+                  )}
                 </div>
 
                 <div className="bg-gradient-to-br from-amber-500/10 to-yellow-500/10 backdrop-blur-md border border-amber-500/20 p-8 rounded-3xl hover:from-amber-500/20 hover:to-yellow-500/20 transition-all flex flex-col justify-between relative overflow-hidden">
@@ -2155,6 +2164,7 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
                 </div>
               </div>
 
+              {POINTS_MISSIONS_ENABLED && (<>
               {/* Second Row: Points and Mission */}
               <h2 className="text-lg font-black text-yellow-400 mt-10 mb-3">แต้มและภารกิจ</h2>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -2378,6 +2388,7 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
                   </div>
                 </div>
               </div>
+              </>)}
 
 
               {/* Redeem Modal */}
