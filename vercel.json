@@ -1,0 +1,12 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/daily-reset",
+      "schedule": "0 17 * * *"
+    },
+    {
+      "path": "/api/cron/coupon-summary",
+      "schedule": "0 17 1,15 * *"
+    }
+  ]
+}
