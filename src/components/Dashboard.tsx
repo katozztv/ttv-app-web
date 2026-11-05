@@ -1556,6 +1556,22 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
   const customizeGroup = filteredAdminUsers.filter(u => u.discord_id !== '279905202277187584' && u.role !== 'admin' && !['ttv', 'ttv_star'].includes((u.role || '').toLowerCase()) && hasValidExpiration(u));
   const noAccessGroup = filteredAdminUsers.filter(u => u.discord_id !== '279905202277187584' && u.role !== 'admin' && !['ttv', 'ttv_star'].includes((u.role || '').toLowerCase()) && !hasValidExpiration(u));
 
+  const navItems = ([
+    { id: 'dashboard', icon: '🏠', label: 'หน้าหลัก', desc: '', show: true, isNew: false },
+    { id: 'counter', icon: '🎯', label: 'นับวิน', desc: 'ตัวนับวินขึ้นจอไลฟ์', show: hasAppAccess('counter'), isNew: false },
+    { id: 'gifts', icon: '🎁', label: 'ระบบของขวัญ', desc: 'ตั้งว่าของขวัญไหนทำอะไร', show: hasAppAccess('gifts'), isNew: false },
+    { id: 'game', icon: '🎮', label: 'เกม', desc: 'เกมที่คนดูเล่นด้วยของขวัญ', show: hasAppAccess('game'), isNew: showNewBadge },
+    { id: 'sound', icon: '🔊', label: 'ระบบเสียง', desc: 'เล่นเสียงเมื่อได้ของขวัญ', show: hasAppAccess('sound'), isNew: false },
+    { id: 'keyboard_sound', icon: '🎹', label: 'เสียงคีย์บอร์ด', desc: 'กดปุ่มแล้วมีเสียง', show: hasAppAccess('keyboard_sound'), isNew: false },
+    { id: 'decoration', icon: '✨', label: 'ตกแต่ง', desc: 'ของตกแต่งหน้าจอไลฟ์', show: hasAppAccess('decoration'), isNew: false },
+    { id: 'admin', icon: '🛡️', label: 'จัดการสิทธิ์', desc: 'ดูแลสมาชิก (แอดมิน)', show: isOwner || isAdmin, isNew: false },
+  ] as const).filter(item => item.show);
+  const openView = (id: typeof view) => {
+    setView(id);
+    if (id === 'admin') fetchAdminUsers();
+    document.getElementById('ttv-main')?.scrollTo({ top: 0 });
+  };
+
   return (
     <div className="min-h-screen bg-[#050505] relative overflow-hidden text-white flex">
       {/* Background gradients */}
@@ -1571,27 +1587,15 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
           <div className="mt-1 h-1 w-12 rounded-full bg-yellow-400" />
         </div>
 
-        {([
-          { id: 'dashboard', icon: '🏠', label: 'หน้าหลัก', show: true },
-          { id: 'counter', icon: '🎯', label: 'นับวิน', show: hasAppAccess('counter') },
-          { id: 'gifts', icon: '🎁', label: 'ระบบของขวัญ', show: hasAppAccess('gifts') },
-          { id: 'game', icon: '🎮', label: 'เกม', show: hasAppAccess('game'), isNew: showNewBadge },
-          { id: 'sound', icon: '🔊', label: 'ระบบเสียง', show: hasAppAccess('sound') },
-          { id: 'keyboard_sound', icon: '🎹', label: 'เสียงคีย์บอร์ด', show: hasAppAccess('keyboard_sound') },
-          { id: 'decoration', icon: '✨', label: 'ตกแต่ง', show: hasAppAccess('decoration') },
-          { id: 'admin', icon: '🛡️', label: 'จัดการสิทธิ์', show: isOwner || isAdmin },
-        ] as const).filter(item => item.show).map(item => (
+        {navItems.map(item => (
           <button
             key={item.id}
-            onClick={() => {
-              setView(item.id);
-              if (item.id === 'admin') fetchAdminUsers();
-            }}
+            onClick={() => openView(item.id)}
             className={`w-full flex items-center gap-3 px-3 py-3 rounded-xl text-left font-bold transition-all ${view === item.id ? 'bg-yellow-400 text-black shadow-[0_0_20px_rgba(250,204,21,0.25)]' : 'text-zinc-400 hover:bg-yellow-400/10 hover:text-yellow-300'}`}
           >
             <span className="text-xl w-7 text-center">{item.icon}</span>
             <span className="flex-1">{item.label}</span>
-            {'isNew' in item && item.isNew && <span className="px-1.5 py-0.5 bg-red-500 text-white text-[9px] font-black rounded animate-pulse leading-none">NEW</span>}
+            {item.isNew && <span className="px-1.5 py-0.5 bg-red-500 text-white text-[9px] font-black rounded animate-pulse leading-none">NEW</span>}
           </button>
         ))}
 
@@ -1620,8 +1624,17 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
       </aside>
 
       {/* Main Content */}
-      <div className="flex-1 p-8 overflow-y-auto h-screen relative z-10">
+      <div id="ttv-main" className="flex-1 p-8 overflow-y-auto h-screen relative z-10">
         <div className="w-full h-full">
+          {view !== 'dashboard' && (
+            <button
+              onClick={() => openView('dashboard')}
+              className="mb-6 flex items-center gap-2 px-4 py-2.5 rounded-xl bg-yellow-400 hover:bg-yellow-300 text-black font-black transition-all"
+            >
+              <ChevronLeft className="w-5 h-5" />
+              กลับหน้าหลัก
+            </button>
+          )}
           <div className={view === 'keyboard_sound' ? 'block w-full h-full relative' : 'hidden'}>
             {isKeyboardSoundLocked && (
               <div className="absolute inset-0 z-50 flex flex-col items-center justify-center pointer-events-auto">
@@ -1657,6 +1670,24 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
                 </div>
 
               </header>
+
+              {/* Simple launcher: one big button per app */}
+              <h2 className="text-lg font-black text-yellow-400 mb-3">เลือกเครื่องมือ</h2>
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+                {navItems.filter(item => item.id !== 'dashboard').map(item => (
+                  <button
+                    key={item.id}
+                    onClick={() => openView(item.id)}
+                    className="group relative text-left p-5 rounded-2xl bg-zinc-900 border border-yellow-400/15 hover:border-yellow-400 hover:bg-yellow-400 transition-all"
+                  >
+                    {item.isNew && <span className="absolute top-3 right-3 px-1.5 py-0.5 bg-red-500 text-white text-[10px] font-black rounded animate-pulse">NEW</span>}
+                    <div className="text-4xl mb-3">{item.icon}</div>
+                    <div className="text-xl font-black text-white group-hover:text-black transition-colors">{item.label}</div>
+                    <div className="text-sm text-zinc-400 group-hover:text-black/70 mt-1 transition-colors">{item.desc}</div>
+                  </button>
+                ))}
+              </div>
+
 
 
               {/* Special Event: Long Holiday Event (28-30 Jul) */}
@@ -1919,6 +1950,7 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
                   </div>
                 </div>
               </div>
+              <h2 className="text-lg font-black text-yellow-400 mb-3">บัญชีของฉัน และการเชื่อมต่อ TikTok</h2>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-3xl hover:bg-white/10 transition-colors flex flex-col">
                   <div>
@@ -2137,7 +2169,8 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
               </div>
 
               {/* Second Row: Points and Mission */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+              <h2 className="text-lg font-black text-yellow-400 mt-10 mb-3">แต้มและภารกิจ</h2>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Points Card */}
                 <div className="bg-gradient-to-r from-amber-500/10 to-amber-500/10 backdrop-blur-md border border-amber-500/20 p-8 rounded-3xl relative overflow-hidden group hover:border-amber-500/40 transition-all flex flex-col justify-center">
                   {isLocked && (
