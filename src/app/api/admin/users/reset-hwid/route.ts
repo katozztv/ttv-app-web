@@ -32,7 +32,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Missing discord_id or discord_username' }, { status: 400 });
     }
 
-    if (discord_id === OWNER_ID) {
+    if (discord_id === OWNER_ID && session.user.id !== OWNER_ID) {
       return NextResponse.json({ error: 'Cannot modify Owner' }, { status: 403 });
     }
 

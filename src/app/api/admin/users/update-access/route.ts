@@ -32,7 +32,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Missing discord_id' }, { status: 400 });
     }
 
-    if (discord_id === OWNER_ID) {
+    // Only the owner may edit the owner's own access/permissions, and never the owner role itself
+    if (discord_id === OWNER_ID && (session.user.id !== OWNER_ID || role !== undefined)) {
       return NextResponse.json({ error: 'Cannot modify Owner' }, { status: 403 });
     }
 

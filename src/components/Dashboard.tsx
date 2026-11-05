@@ -398,13 +398,17 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
         expiresAt = date.toISOString();
       }
 
+      const currentRole = String(adminUsers.find(u => u.discord_id === discordId)?.role || '').toLowerCase();
+      const keepsRole = discordId === '279905202277187584' || ['admin', 'ttv', 'ttv_star'].includes(currentRole);
+
       const res = await fetch('/api/admin/users/update-access', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           discord_id: discordId,
           access_expires_at: expiresAt,
-          role: durationDays === null ? 'user' : 'customize',
+          // Keep owner/admin/TTV roles; only plain users switch between user and customize
+          ...(keepsRole ? {} : { role: durationDays === null ? 'user' : 'customize' }),
           permissions: { apps, games, roblox_games, minecraft_games, other_games, custom_expirations }
         })
       });
@@ -7818,7 +7822,8 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
                                   key={u.discord_id}
                                   className="border-b border-white/5 hover:bg-white/5 transition-colors cursor-context-menu"
                                   onContextMenu={(e) => {
-                                    if (u.discord_id !== '279905202277187584') {
+                                    // Owner row: only the owner can open it (to edit their own settings)
+                                    if (u.discord_id !== '279905202277187584' || actualIsOwner) {
                                       e.preventDefault();
                                       setContextMenu({ userId: u.discord_id, x: e.clientX, y: e.clientY });
                                     }
@@ -8148,7 +8153,7 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
                           </div>
                         )}
 
-                        {targetUser.discord_id !== '279905202277187584' && (
+                        {(targetUser.discord_id !== '279905202277187584' || actualIsOwner) && (
                           <div className="py-1">
                             <button
                               onClick={() => {
@@ -8234,6 +8239,7 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
                             >
                               🔄 Reset HWID
                             </button>
+                            {targetUser.discord_id !== '279905202277187584' && (
                             <button
                               onClick={async () => {
                                 const res = await Swal.fire({
@@ -8260,6 +8266,7 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
                             >
                               🗑️ ลบผู้ใช้งาน
                             </button>
+                            )}
                           </div>
                         )}
                       </div>
