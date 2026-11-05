@@ -3047,9 +3047,9 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
                 )}
               </header>
 
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 xl:grid-cols-[minmax(320px,380px)_minmax(0,1fr)] gap-6 items-start">
                 {/* Preset Management */}
-                <div className="lg:col-span-1 space-y-6">
+                <div className="min-w-0 space-y-6">
                   <div className="bg-white/5 backdrop-blur-md border border-white/10 p-6 rounded-3xl">
                     <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
                       <span>💾</span> Preset
@@ -3066,7 +3066,7 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
                               setActiveGiftPresetId(id || null);
                               updateGiftPresetsBackend(giftPresets, id || null);
                             }}
-                            className="flex-1 bg-black/50 border border-zinc-700/50 rounded-xl px-4 py-3 text-white outline-none focus:border-amber-500/50"
+                            className="flex-1 min-w-0 bg-black/50 border border-zinc-700/50 rounded-xl px-4 py-3 text-white outline-none focus:border-amber-500/50"
                           >
                             <option value="">-- ไม่ได้เลือก --</option>
                             {giftPresets.filter(p => {
@@ -3186,10 +3186,10 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
                         <span className="text-sm font-bold text-red-400 drop-shadow-md">🔒 ล็อก</span>
                       </div>
                     )}
-                    <h3 className="font-bold text-lg mb-4 flex items-center justify-between">
-                      <div className="flex items-center gap-2"><span>🎰</span> สุ่มกงล้อ</div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs text-zinc-400">{isRouletteServerRunning ? 'กำลังทำงาน' : 'หยุดทำงาน'}</span>
+                    <h3 className="font-bold text-lg mb-4 flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-2 whitespace-nowrap"><span>🎰</span> สุ่มกงล้อ</div>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <span className="text-xs text-zinc-400 whitespace-nowrap">{isRouletteServerRunning ? 'กำลังทำงาน' : 'หยุดทำงาน'}</span>
                         <div
                           onClick={() => {
                             const newState = !isRouletteServerRunning;
@@ -3389,7 +3389,7 @@ export default function Dashboard({ user, sessionUser }: { user: any, sessionUse
                 </div>
 
                 {/* Rules Editor */}
-                <div className="lg:col-span-2 relative">
+                <div className="min-w-0 relative">
                   {isGiftsLocked && (
                     <div className="absolute inset-0 z-50 flex flex-col items-center justify-center pointer-events-auto">
                       <div className="bg-black/80 px-8 py-6 flex flex-col items-center justify-center border border-red-500/40 rounded-3xl shadow-[0_0_30px_rgba(239,68,68,0.3)] backdrop-blur-xl transform transition-transform hover:scale-105">
